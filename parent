@@ -1,0 +1,7 @@
+#!/usr/bin/env bash 
+parent() {
+    </proc/$(($1))/stat awk '{print $4}'
+}
+
+for arg in "$@"; do parent $((arg)); done
+
