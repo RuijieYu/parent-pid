@@ -1,21 +1,30 @@
 #!/usr/bin/env false # PKGBUILD
 # vim: syntax=bash
 
-pkgname=parent-pid
-pkgver=v0.0.1
+pkgname=parent-pid-git
+_pkgname="${pkgname%-git}"
+
+pkgver=rev2.144069a
 pkgrel=1
-pkgdesc='Provide a script that shows the parent pid for a given pid'
+pkgdesc='A simple program that shows the parent pid for a given pid'
+
 depends=()
-source=(parent)
-md5sums=(SKIP)
+makedepends=('git')
+conflicts=("$_pkgname")
 arch=(any)
+
 license=(MIT)
 
+url="https://github.com/RuijieYu/$_pkgname"
+source=("$_pkgname::git+$url.git#branch=master")
+md5sums=(SKIP)
+
 pkgver() (
-    echo v0.0.1
+    cd "$srcdir/$_pkgname"
+    printf rev%d.%s "$(git rev-list --count @)" "$(git rev-parse --short @)"
 )
 
 package() (
-    install -Dm755 "$srcdir/parent" "$pkgdir/usr/bin/parent"
+    install -Dm755 "$srcdir/$_pkgname/parent" "$pkgdir/usr/bin/parent"
 )
 
